@@ -2,36 +2,45 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>XHR and Graph</title>
 </head>
 
 <body>
     hello from Index.html!
     <script>
-        window.addEventListener('load', fetchData)
+        window.addEventListener("load", fetchData);
         function fetchData() {
             const xhr = new XMLHttpRequest();
-            xhr.open('GET', 'http://localhost:3000/csv-data', true);
+            xhr.open("GET", "http://localhost:3000/csv-data", true);
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     let data = xhr.responseText;
                     const globalTemps = processData(data);
+                    console.log(globalTemps);
                 } else {
-                    console.log('Error', xhr.statusText);
+                    console.log("Error", xhr.statusText);
                 }
-            }
+            };
             xhr.send();
-        };
-        function processData(data){
-            const year = [];
-            const temps = [];
         }
-        data = data.split('\n').slice(1);
-        console.log(data[0])
-        </script>
+        function processData(data) {
+            const years = [];
+            const temps = [];
+            rows = data.split("\n").slice(1);
+            rows.forEach((row) => {
+                const cols = row.split(",");
+
+                years.push(cols[0]);
+                temps.push(14 + parseFloat(cols[1]));
+
+                //console.log(cols[0]);
+            });
+            return { years, temps };
+        }
+    </script>
 </body>
 
 </html>
